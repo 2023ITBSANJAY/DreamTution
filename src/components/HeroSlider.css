@@ -1,0 +1,197 @@
+/* HeroSlider.css */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    /* Match original hero height */
+    min-height: 600px;
+    overflow: hidden;
+    color: white;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Background Image with Zoom Effect */
+.slide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    transition: transform 6s ease-out;
+    /* Slow zoom for active slide */
+}
+
+.slide.active .slide-image {
+    transform: scale(1.1);
+    /* Ken Burns effect */
+}
+
+/* Overlay */
+.slide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient overlay for text readability - Sky Blue Theme */
+    background: linear-gradient(135deg, rgba(3, 169, 244, 0.85), rgba(1, 87, 155, 0.85));
+    /* Sky Blue Gradient */
+    opacity: 0.9;
+}
+
+/* Content Container */
+.slide-content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Center alignment like original */
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Text Animations */
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+.hero-title .highlight {
+    color: #fff;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hero-slider {
+    display: inline-block;
+    padding: 1.25rem 3.5rem;
+    background: white;
+    color: var(--primary, #558b2f);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease, opacity 0.8s ease-out 0.7s, transform 0.8s ease-out 0.7s;
+}
+
+.btn-hero-slider:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Active State Trigger Animations */
+.slide.active .hero-subtitle,
+.slide.active .hero-title,
+.slide.active .btn-hero-slider {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Navigation Dots */
+.slider-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    width: 30px;
+    background: white;
+    border-radius: 6px;
+}
+
+/* Navigation Arrows (Optional) */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.slider-arrow:hover {
+    background: white;
+    color: var(--primary, #558b2f);
+}
+
+.slider-arrow.left {
+    left: 20px;
+}
+
+.slider-arrow.right {
+    right: 20px;
+}
+
+@media (max-width: 768px) {
+    .slider-arrow {
+        display: none;
+    }
+
+    /* Hide arrows on mobile */
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
