@@ -15,7 +15,7 @@ export default function StudentLogin() {
     // Ensure clean session on load
     useEffect(() => {
         logout();
-    }, []);
+    }, [logout]);
 
     const handleLogin = async (e) => {
         e.preventDefault();

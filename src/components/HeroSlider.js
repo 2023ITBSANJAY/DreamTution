@@ -40,23 +40,19 @@ const HeroSlider = ({ user, isAdmin }) => {
     const [current, setCurrent] = useState(0);
     const length = slides.length;
 
-    const nextSlide = () => {
-        setCurrent(current === length - 1 ? 0 : current + 1);
-    };
+    const nextSlide = React.useCallback(() => {
+        setCurrent(prev => (prev === length - 1 ? 0 : prev + 1));
+    }, [length]);
 
-    const prevSlide = () => {
-        setCurrent(current === 0 ? length - 1 : current - 1);
-    };
+    const prevSlide = React.useCallback(() => {
+        setCurrent(prev => (prev === 0 ? length - 1 : prev - 1));
+    }, [length]);
 
     // Auto-play
     useEffect(() => {
-        const interval = setInterval(() => {
-            prevSlide(); // Using prevSlide/nextSlide logic is fine if we use functional updates or move them in
-            // But actually let's just use the direct logic to avoid extra dependencies
-            setCurrent(prev => (prev === length - 1 ? 0 : prev + 1));
-        }, 5000);
+        const interval = setInterval(nextSlide, 5000);
         return () => clearInterval(interval);
-    }, [length]);
+    }, [nextSlide]);
 
     if (!Array.isArray(slides) || slides.length <= 0) {
         return null;

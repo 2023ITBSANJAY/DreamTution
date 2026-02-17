@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { FaMoneyBillWave, FaCommentMedical, FaHistory, FaCheckCircle, FaTimesCircle, FaPaperPlane, FaFileDownload } from 'react-icons/fa';
+import { FaMoneyBillWave, FaCommentMedical, FaHistory, FaCheckCircle, FaPaperPlane, FaFileDownload } from 'react-icons/fa';
 import { API_URL, MAIL_URL } from '../config';
 
 export default function StudentDashboard() {
@@ -164,11 +164,7 @@ function MyComplaints() {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        fetchComplaints();
-    }, []);
-
-    const fetchComplaints = async () => {
+    const fetchComplaints = React.useCallback(async () => {
         try {
             const res = await fetch(`${API_URL}/complaints/student/${user._id}`);
             const data = await res.json();
@@ -176,7 +172,11 @@ function MyComplaints() {
         } catch (err) {
             console.error(err);
         }
-    };
+    }, [user._id]);
+
+    useEffect(() => {
+        fetchComplaints();
+    }, [fetchComplaints]);
 
     const submitComplaint = async (e) => {
         e.preventDefault();

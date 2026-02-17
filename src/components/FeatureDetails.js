@@ -162,19 +162,16 @@ export default function FeatureDetails() {
                         <div className="course-discount-section">
                             <div className="discount-header">
                                 <div className="discount-badge">SPECIAL OFFER</div>
-                                <h2>🎓 Available College Courses</h2>
-                                <p>Enroll now and get a flat <strong>25% DISCOUNT</strong> on tuition fees for all these programs!</p>
+                                <h2>🎓 Pre-KG to 12th Class All Courses</h2>
+                                <p>Enroll now and get a flat <strong>25% DISCOUNT</strong> on tuition fees for all these classes!</p>
                             </div>
 
                             <div className="course-grid">
                                 {[
-                                    "B.E / B.Tech (Engineering)", "BCA (Computer Apps)", "B.Sc Computer Science",
-                                    "B.Sc IT", "B.Sc Mathematics", "B.Com", "BBA",
-                                    "BA (Eng/Tam/His/Eco)", "MBBS", "BDS", "B.Sc Nursing",
-                                    "B.Pharm", "B.Sc Allied Health", "LLB (Law)", "B.Arch",
-                                    "B.Des", "Hotel Management", "Visual Communication",
-                                    "Animation & Multimedia", "B.Sc Agriculture", "Biotechnology",
-                                    "Psychology", "Social Work (BSW)", "Aviation Courses", "Fashion Designing"
+                                    "Pre-KG / LKG / UKG", "1st to 5th Class", "6th to 8th Class",
+                                    "9th Class", "10th Class (SSLC)", "11th Class", "12th Class (HSC)",
+                                    "CBSE All Classes", "ICSE All Classes", "State Board All Classes",
+                                    "Hindi Prachar Sabha", "Abacus & Vedic Maths", "Handwriting & Calligraphy"
                                 ].map((course, idx) => (
                                     <div key={idx} className="course-item-card">
                                         <div className="course-disc-badge">25% OFF</div>

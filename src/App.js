@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, NavLink, Navigate } from "react-router-dom";
-import { FaBars, FaTimes, FaGraduationCap, FaUserPlus, FaUsers, FaReceipt, FaDollarSign, FaHome, FaPhone, FaEnvelope, FaTag, FaUserCircle, FaSignOutAlt, FaInbox } from "react-icons/fa";
+import { FaBars, FaTimes, FaGraduationCap, FaUserPlus, FaUsers, FaReceipt, FaDollarSign, FaHome, FaPhone, FaEnvelope, FaTag, FaUserCircle, FaSignOutAlt, FaInbox, FaPlayCircle, FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useAuth } from "./context/AuthContext";
 
 import AddStudent from "./components/AddStudent";
@@ -18,6 +18,7 @@ import FeatureDetails from "./components/FeatureDetails";
 import "./App.css";
 // import heroBg from "./assets/images/slider-1.png"; // Moved to HeroSlider
 import HeroSlider from "./components/HeroSlider";
+import ReviewDetails, { reviews as reviewData } from "./components/ReviewDetails";
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -139,13 +140,15 @@ export default function App() {
             {!user && <Link to="/login" onClick={closeDrawer}><FaUserCircle /> Login</Link>}
 
             <div style={{ padding: '1rem', borderTop: '1px solid var(--border)', marginTop: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
-                <FaPhone style={{ color: 'var(--primary)' }} />
-                <span>8110054961</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-secondary)' }}>
-                <FaEnvelope style={{ color: 'var(--primary)' }} />
-                <span>dreamtuition@gmail.com</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', color: 'var(--text-secondary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <FaEnvelope style={{ color: 'var(--primary)' }} />
+                  <span>dreamtuition@gmail.com</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <FaPhone style={{ color: 'var(--primary)' }} />
+                  <span>8110054961</span>
+                </div>
               </div>
             </div>
 
@@ -177,35 +180,23 @@ export default function App() {
             </div>
             <div className="toast-content">
               <div className="toast-tag">LIMITED OFFER</div>
-              <h4>🎓 College Course Discounts!</h4>
-              <p>Get <strong>25% OFF</strong> on all these courses:</p>
+              <h4>🎓 Pre-KG to 12th Class All Courses!</h4>
+              <p>Enroll now and get a flat <strong>25% DISCOUNT</strong> on tuition fees!</p>
 
               <div className="course-scroll-container">
-                <div className="course-chip">B.E / B.Tech</div>
-                <div className="course-chip">BCA (Applications)</div>
-                <div className="course-chip">B.Sc Computer Science</div>
-                <div className="course-chip">B.Sc IT</div>
-                <div className="course-chip">B.Sc Mathematics</div>
-                <div className="course-chip">B.Com</div>
-                <div className="course-chip">BBA</div>
-                <div className="course-chip">BA (Eng/Tam/His/Eco)</div>
-                <div className="course-chip">MBBS</div>
-                <div className="course-chip">BDS</div>
-                <div className="course-chip">B.Sc Nursing</div>
-                <div className="course-chip">B.Pharm</div>
-                <div className="course-chip">Allied Health Sciences</div>
-                <div className="course-chip">LLB (Law)</div>
-                <div className="course-chip">B.Arch</div>
-                <div className="course-chip">B.Des</div>
-                <div className="course-chip">Hotel Management</div>
-                <div className="course-chip">Visual Communication</div>
-                <div className="course-chip">Animation & Multimedia</div>
-                <div className="course-chip">Agriculture (B.Sc Agri)</div>
-                <div className="course-chip">Biotechnology</div>
-                <div className="course-chip">Psychology</div>
-                <div className="course-chip">Social Work (BSW)</div>
-                <div className="course-chip">Aviation Courses</div>
-                <div className="course-chip">Fashion Designing</div>
+                <div className="course-chip">Pre-KG / LKG / UKG</div>
+                <div className="course-chip">1st to 5th Class</div>
+                <div className="course-chip">6th to 8th Class</div>
+                <div className="course-chip">9th Class</div>
+                <div className="course-chip">10th Class (SSLC)</div>
+                <div className="course-chip">11th Class</div>
+                <div className="course-chip">12th Class (HSC)</div>
+                <div className="course-chip">CBSE All Classes</div>
+                <div className="course-chip">ICSE All Classes</div>
+                <div className="course-chip">State Board All Classes</div>
+                <div className="course-chip">Hindi Prachar Sabha</div>
+                <div className="course-chip">Abacus & Vedic Maths</div>
+                <div className="course-chip">Handwriting & Calligraphy</div>
               </div>
 
               <Link to="/feature/student-management" className="toast-action" onClick={() => setShowDiscountToast(false)}>
@@ -223,6 +214,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/feature/:id" element={<FeatureDetails />} />
+            <Route path="/review/:id" element={<ReviewDetails />} />
 
             {/* Auth Routes */}
             <Route path="/login" element={!user ? <LoginSelection /> : <Navigate to="/" />} />
@@ -276,6 +268,21 @@ function HomePage() {
   const { user } = useAuth();
   const isAdmin = user && user.role === 'admin';
 
+  // --- 🎠 Review Carousel Logic ---
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const reviews = reviewData;
+
+  const nextSlide = React.useCallback(() => setCurrentSlide((prev) => (prev + 1) % reviews.length), [reviews.length]);
+  const prevSlide = React.useCallback(() => setCurrentSlide((prev) => (prev - 1 + reviews.length) % reviews.length), [reviews.length]);
+
+  React.useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [isHovered, nextSlide]);
+
   return (
     <div className="homepage">
       {/* Hero Slider */}
@@ -288,7 +295,6 @@ function HomePage() {
             <h2>Manage Your Tuition Like Never Before</h2>
             <p>Streamline student management, track fees effortlessly, and generate instant receipts</p>
           </div>
-
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon-wrapper">
@@ -324,6 +330,86 @@ function HomePage() {
               <h3>Student Directory</h3>
               <p>Search, filter, and manage your complete student database with ease.</p>
               <Link to="/feature/student-directory" className="feature-link">Learn More →</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 📹 Student Reviews Section (Success Stories) */}
+      <section className="reviews-section">
+        <div className="container">
+          <div className="section-header-center">
+            <div className="section-tag">SUCCESS STORIES</div>
+            <h2>Our Students, Our Pride</h2>
+            <p>Experience the impact of Dream Tuition through those who've lived it.</p>
+          </div>
+
+          <div
+            className="carousel-wrapper"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="carousel-track-container">
+              <div
+                className="carousel-track"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {reviews.map((review) => (
+                  <div key={review.id} className="carousel-slide">
+                    <Link to={`/review/${review.id}`} className="review-card-link">
+                      <div className="review-card featured-video">
+                        <div className="video-container">
+                          <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            poster={review.poster}
+                            className="autoplay-video"
+                          >
+                            <source src={review.video} type="video/mp4" />
+                          </video>
+                          <div className="review-overlay-play">
+                            <FaPlayCircle />
+                            <span>Full Story</span>
+                          </div>
+                        </div>
+                        <div className="review-content">
+                          <div className="rating">
+                            <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                          </div>
+                          <FaQuoteLeft className="quote-icon" />
+                          <p>"{review.quote}"</p>
+                          <div className="reviewer-info">
+                            <strong>{review.name}</strong>
+                            <span>{review.role}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            <button className="carousel-btn prev" onClick={prevSlide} aria-label="Previous slide">
+              <FaChevronLeft />
+            </button>
+            <button className="carousel-btn next" onClick={nextSlide} aria-label="Next slide">
+              <FaChevronRight />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="carousel-dots">
+              {reviews.map((_, index) => (
+                <button
+                  key={index}
+                  className={`dot ${currentSlide === index ? 'active' : ''}`}
+                  onClick={() => setCurrentSlide(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
